@@ -1,0 +1,10 @@
+name: practice_polymer
+description: A Polymer Dart application.
+dependencies:
+  core_elements: any
+  intl: any
+  paper_elements: any
+  polymer: any
+transformers:
+- polymer:
+    entry_points: web/index.html
