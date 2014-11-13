@@ -175,121 +175,124 @@ class Entity {
 
 
 
-//// Shit for practicing shit
-//import 'dart:io';
-//
-//void main() {
-//  
-//  int _strength;
-//  int _dexterity;
-//  int _constitution;
-//  int _intelligence;
-//  int _wisdom;
-//  int _charisma; 
-//  
-//  print("Input strength");
-//  _strength = int.parse(stdin.readLineSync());
-//
-//  print("Input dexterity");
-//  _dexterity = int.parse(stdin.readLineSync());
-//  
-//  print("Input con");
-//  _constitution = int.parse(stdin.readLineSync());
-//  
-//  print("Input intelligence");
-//  _intelligence = int.parse(stdin.readLineSync());
-//  
-//  print("Input wisdom");
-//  _wisdom = int.parse(stdin.readLineSync());
-//  
-//  print("Input charisma");
-//  _charisma = int.parse(stdin.readLineSync());
-//
-//  Map<String, int> abilities = { // Write getters for all these and use them instead of the raw private int.
-//      "Strength": _strength,
-//      "Dexterity": _dexterity,
-//      "Constitution": _constitution, 
-//      "Intelligence": _intelligence,
-//      "Wisdom": _wisdom,
-//      "Charisma": _charisma
-//    };
-//  
-//  // Skill lists (as maps)
-//  Map<String, int> strSkills = {
-//  "athletics": 0
-//  };
-//  
-//  Map<String, int> dexSkills = {
-//  "acrobatics": 0,
-//  "sleight of hand": 0,     
-//  "stealth": 0
-//  };
-//  
-//  Map<String, int> intSkills = {
-//  "arcana": 0,
-//  "history": 0,
-//  "investigation": 0,
-//  "nature": 0,
-//  "religion": 0      
-//  };
-//  
-//  Map<String, int> wisSkills = {
-//  "animal handling": 0,
-//  "insight": 0,
-//  "medicine": 0,
-//  "perception": 0,
-//  "survival": 0
-//  };
-//  
-//  Map<String, int> chaSkills = {
-//  "deception": 0,
-//  "intimidation": 0,
-//  "performance": 0,
-//  "persuasion": 0
-//  };
-//  
-//  List<Map> skillList = [];
-//  
-//  // Does not include Constitution.
-//  List<int> abilitiesForSkills = [];
-//  
-//  skillList = [strSkills, dexSkills, intSkills, wisSkills, chaSkills];
-//  abilitiesForSkills = [_strength, _dexterity, _intelligence, _wisdom, _charisma];
-//  
-//  
-//  int calcAbilityMod(int abilityScore) {
-//   return (abilityScore/2 - 5).floor();
-//  }
-//  
-//  // Run after race (and class?) is/are selected.
-//  void skillsPlusAbilities() {
-//   for (int i = 0; i < abilitiesForSkills.length; i++) {
+// Shit for practicing shit
+import 'dart:io';
+
+void main() {
+
+int _strength;
+int _dexterity;
+int _constitution;
+int _intelligence;
+int _wisdom;
+int _charisma; 
+
+print("Input strength");
+_strength = int.parse(stdin.readLineSync());
+
+print("Input dexterity");
+_dexterity = int.parse(stdin.readLineSync());
+
+print("Input con");
+_constitution = int.parse(stdin.readLineSync());
+
+print("Input intelligence");
+_intelligence = int.parse(stdin.readLineSync());
+
+print("Input wisdom");
+_wisdom = int.parse(stdin.readLineSync());
+
+print("Input charisma");
+_charisma = int.parse(stdin.readLineSync());
+
+Map<String, int> abilities = { // Write getters for all these and use them instead of the raw private int.
+   "Strength": _strength,
+   "Dexterity": _dexterity,
+   "Constitution": _constitution, 
+   "Intelligence": _intelligence,
+   "Wisdom": _wisdom,
+   "Charisma": _charisma
+ };
+
+// Skill lists (as maps)
+Map<String, int> strSkills = {
+"athletics": 0
+};
+
+Map<String, int> dexSkills = {
+"acrobatics": 0,
+"sleight of hand": 0,     
+"stealth": 0
+};
+
+Map<String, int> intSkills = {
+"arcana": 0,
+"history": 0,
+"investigation": 0,
+"nature": 0,
+"religion": 0      
+};
+
+Map<String, int> wisSkills = {
+"animal handling": 0,
+"insight": 0,
+"medicine": 0,
+"perception": 0,
+"survival": 0
+};
+
+Map<String, int> chaSkills = {
+"deception": 0,
+"intimidation": 0,
+"performance": 0,
+"persuasion": 0
+};
+
+List<Map> skillList = [];
+
+// Does not include Constitution.
+List<int> abilitiesForSkills = [];
+
+skillList = [strSkills, dexSkills, intSkills, wisSkills, chaSkills];
+abilitiesForSkills = [_strength, _dexterity, _intelligence, _wisdom, _charisma];
+
+
+int calcAbilityMod(int abilityScore) {
+return (abilityScore/2 - 5).floor();
+}
+
+// Run after race (and class?) is/are selected.
+void skillsPlusAbilities() {
+for (int i = 0; i < abilitiesForSkills.length; i++) {
+  skillList[i].forEach((String k, int value) {
+    value++; // calcAbilityMod(abilitiesForSkills[i]); 
+  });     
 //     for (int j = 0; j < skillList[i].length; j++) {
+//     }        
 //       for (Map skillMap in skillList[i]) {
 //         skillMap[i] += calcAbilityMod(abilitiesForSkills[i]);
-//       }        
-//     }
-//   }
 //  }
-//  
-//  String printSkills() {
-//    print(skillList.toString());
-//    return skillList.toString();
-//  }
-//    
-//  String printAbilitiesAndMods() {
-//    print("${abilities.keys.toString()} : ${abilities.values.toString()}");
-//    
-//    return abilities.toString();
-//  }
-//
-//  printAbilitiesAndMods();
-//  printSkills();  
-//  
-//  skillsPlusAbilities();
-//  
-//  printAbilitiesAndMods();
-//  printSkills();  
-//  
-//  
-//}
+}
+}
+
+String printSkills() {
+ print(skillList.toString());
+ return skillList.toString();
+}
+ 
+String printAbilitiesAndMods() {
+ abilities.forEach((String k, int v) => print("$k : $v Modifier: ${calcAbilityMod(v)} \n"));
+ String msg = "${abilities.forEach((String k, int v) => "$k : $v \n")}";
+ return msg;
+}
+
+printAbilitiesAndMods();
+printSkills();  
+
+skillsPlusAbilities();
+
+printAbilitiesAndMods();
+printSkills();  
+
+
+}
