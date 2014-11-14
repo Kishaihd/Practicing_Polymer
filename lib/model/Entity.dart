@@ -175,6 +175,7 @@ class Entity {
 
 
 
+
 // Shit for practicing shit
 import 'dart:io';
 
@@ -206,13 +207,13 @@ print("Input charisma");
 _charisma = int.parse(stdin.readLineSync());
 
 Map<String, int> abilities = { // Write getters for all these and use them instead of the raw private int.
-   "Strength": _strength,
-   "Dexterity": _dexterity,
-   "Constitution": _constitution, 
-   "Intelligence": _intelligence,
-   "Wisdom": _wisdom,
-   "Charisma": _charisma
- };
+"Strength": _strength,
+"Dexterity": _dexterity,
+"Constitution": _constitution, 
+"Intelligence": _intelligence,
+"Wisdom": _wisdom,
+"Charisma": _charisma
+};
 
 // Skill lists (as maps)
 Map<String, int> strSkills = {
@@ -263,31 +264,33 @@ return (abilityScore/2 - 5).floor();
 
 // Run after race (and class?) is/are selected.
 void skillsPlusAbilities() {
+List newSkillList = new List.from(skillList);
+ 
 for (int i = 0; i < abilitiesForSkills.length; i++) {
-  skillList[i].forEach((String k, int value) {
-    value++; // calcAbilityMod(abilitiesForSkills[i]); 
-  });     
-//     for (int j = 0; j < skillList[i].length; j++) {
-//     }        
-//       for (Map skillMap in skillList[i]) {
-//         skillMap[i] += calcAbilityMod(abilitiesForSkills[i]);
-//  }
+ for (int j = 0; j < skillList[i].length; j++) {
+   skillList[i].forEach((String k, int value) {
+     newSkillList[i][k][value] = skillList[i][k][value + calcAbilityMod(abilitiesForSkills[i])];        
+//        int score = value;
+//        score += calcAbilityMod(abilitiesForSkills[i]);
+//        value = score;
+   });
+ }
 }
+skillList = newSkillList;
+newSkillList.clear();
 }
 
 String printSkills() {
- print(skillList.toString());
- return skillList.toString();
-}
- 
-String printAbilitiesAndMods() {
- abilities.forEach((String k, int v) => print("$k : $v Modifier: ${calcAbilityMod(v)} \n"));
- String msg = "${abilities.forEach((String k, int v) => "$k : $v \n")}";
- return msg;
+print(skillList.toString());
+return skillList.toString();
 }
 
-printAbilitiesAndMods();
-printSkills();  
+String printAbilitiesAndMods() {
+abilities.forEach((String k, int v) => print("$k : $v Modifier: ${calcAbilityMod(v)} \n"));
+String msg = "${abilities.forEach((String k, int v) => "$k : $v \n")}";
+return msg;
+}
+
 
 skillsPlusAbilities();
 
@@ -296,3 +299,4 @@ printSkills();
 
 
 }
+
