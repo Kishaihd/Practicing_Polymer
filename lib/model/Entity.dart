@@ -249,12 +249,12 @@ Map<String, int> chaSkills = {
 "persuasion": 0
 };
 
-List<Map> skillList = [];
+//  List<Map> skillList = [];
 
 // Does not include Constitution.
 List<int> abilitiesForSkills = [];
 
-skillList = [strSkills, dexSkills, intSkills, wisSkills, chaSkills];
+List<Map> skillList = [strSkills, dexSkills, intSkills, wisSkills, chaSkills];
 abilitiesForSkills = [_strength, _dexterity, _intelligence, _wisdom, _charisma];
 
 
@@ -262,23 +262,47 @@ int calcAbilityMod(int abilityScore) {
 return (abilityScore/2 - 5).floor();
 }
 
+//  Map newMap(Map oldMap) {
+//    int i = 0;
+//    Map<String, int> newMap;
+//    while (i < oldMap.length) {
+//      newMap
+//      i++;
+//    }
+//    
+//    return new Map.from(oldMap);
+//  }
+
 // Run after race (and class?) is/are selected.
-void skillsPlusAbilities() {
-List newSkillList = new List.from(skillList);
+void skillsPlusAbilities() {    
+ List<Map> newSkillList = [];
+ List<String> keys;
  
-for (int i = 0; i < abilitiesForSkills.length; i++) {
- for (int j = 0; j < skillList[i].length; j++) {
-   skillList[i].forEach((String k, int value) {
-     newSkillList[i][k][value] = skillList[i][k][value + calcAbilityMod(abilitiesForSkills[i])];        
+ for (int i = 0; i < abilitiesForSkills.length; i++) {
+  for (int j = 0; j < skillList.elementAt(i).length; j++) {
+//       keys[j] = skillList[i][j];
+//       String key = keys[j];
+   for (Map currentSkillMap in skillList.elementAt(j))  
+     currentSkillMap[String] += calcAbilityMod(abilitiesForSkills[i]);
+//      skillList.forEach((Map<String, int> map) {
+//        currentSkillMap.forEach((String k, int v){v += calcAbilityMod(abilitiesForSkills[i]);
+//      });
+//    });
+}
+ }
+//     //skillList[i].forEach((String k, int value) {
+//     skillList[i][key] += calcAbilityMod(abilitiesForSkills[i]);
+    
+//     newSkillList[i][k][value] = skillList[i][k][value + calcAbilityMod(abilitiesForSkills[i])];        
 //        int score = value;
 //        score += calcAbilityMod(abilitiesForSkills[i]);
 //        value = score;
-   });
- }
+//     });
+//  }
 }
-skillList = newSkillList;
-newSkillList.clear();
-}
+//  skillList = newSkillList;
+//  newSkillList.clear();
+// }
 
 String printSkills() {
 print(skillList.toString());
