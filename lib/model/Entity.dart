@@ -171,6 +171,7 @@ class Entity {
     // statements to add mechanics and maybe flavor text.
     
   }
+  // Save this stuff?
   
   int get strength => _strength;
   int get dexterity => _dexterity;
@@ -198,7 +199,7 @@ class Entity {
 }
 
 
-
+// Save to here wtf
 
 
 //// Shit for practicing shit
