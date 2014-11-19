@@ -252,7 +252,7 @@ class Entity {
 
 
 class Ability {
-  final int LIMIT = 20;
+  final int LIMIT = 20; // Limit for PCs for now.
   final String _name;
   int _score;
   int _mod;
