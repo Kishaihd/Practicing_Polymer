@@ -1,6 +1,8 @@
 library model.Entity;
 
 import 'dart:io';
+import 'Ability.dart';
+import 'Skill.dart';
 
 class Entity {
   String _name;
@@ -17,90 +19,112 @@ class Entity {
   int _movement;
   String _status;
   
-  int _strength;
-  int _dexterity;
-  int _constitution;
-  int _intelligence;
-  int _wisdom;
-  int _charisma;
+  Ability Strength = new Ability("Strength");
+  Ability Dexterity = new Ability("Dexterity");
+  Ability Constitution = new Ability("Constitution");
+  Ability Intelligence = new Ability("Intelligence");
+  Ability Wisdom = new Ability("Wisdom");
+  Ability Charisma = new Ability("Charisma");
   
-  bool statsCalculated = false;
+  List<Ability> abilities;
   
-  // Skill lists (as maps)
-  Map<String, int> strSkills = {
-    "athletics": 0
-  };
+  // Strength skill.
+  Skill Athletics;
+  // Dexterity skills.
+  Skill Acrobatics;
+  Skill SleightOfHand;
+  Skill Stealth;
+  //Intelligence skills.
+  Skill Arcana;
+  Skill History;
+  Skill Investigation;
+  Skill Nature;
+  Skill Religion;
+  // Wisdom skills.
+  Skill AnimalHandling;
+  Skill Insight;
+  Skill Medicine;
+  Skill Perception;
+  Skill Survival;
+  // Charisma skills.
+  Skill Deception;
+  Skill Intimidation;
+  Skill Performance;
+  Skill Persuasion;
   
-  Map<String, int> dexSkills = {
-      "acrobatics": 0,
-      "sleight of hand": 0,     
-      "stealth": 0
-  };
-
-  Map<String, int> intSkills = {
-    "arcana": 0,
-    "history": 0,
-    "investigation": 0,
-    "nature": 0,
-    "religion": 0      
-  };
-
-  Map<String, int> wisSkills = {
-    "animal handling": 0,
-    "insight": 0,
-    "medicine": 0,
-    "perception": 0,
-    "survival": 0
-  };
+  List<Skill> strSkills;
+  List<Skill> dexSkills;
+  List<Skill> intSkills;
+  List<Skill> wisSkills;
+  List<Skill> chaSkills;
   
-  Map<String, int> chaSkills = {
-    "deception": 0,
-    "intimidation": 0,
-    "performance": 0,
-    "persuasion": 0
-  };
-  
-  List<Map> skillList = [];
+  List<List> fullSkillList;
   
   // Does not include Constitution.
   List<int> abilitiesForSkills = [];
   
-//  Entity();
+  bool statsCalculated = false;
   
   // Parameterized constructor.
   // Name, maxHP, ability scores.
-  Entity(this._name, this._maxHitPoints, this._strength, this._dexterity, this._constitution, this._intelligence, this._wisdom, this._charisma) {
+  Entity(this._name, this._maxHitPoints, int strength, int dexterity, int constitution, int intelligence, int wisdom, int charisma) {
     _currentHitPoints = _maxHitPoints;
     _status = "normal";
-    final skillList = [strSkills, dexSkills, intSkills, wisSkills, chaSkills];
-    refactor();
-  }
-  
-  void refactor() {
-    abilitiesForSkills = [_strength, _dexterity, _intelligence, _wisdom, _charisma];
+    
+    Strength.setAbility(strength);
+    Dexterity.setAbility(dexterity);
+    Constitution.setAbility(constitution);
+    Intelligence.setAbility(intelligence);
+    Wisdom.setAbility(wisdom);
+    Charisma.setAbility(charisma);
         
+    abilities = [Strength, Dexterity, Constitution, Intelligence, Wisdom, Charisma];
+    
+    strSkills = [Athletics];
+    dexSkills = [Acrobatics, SleightOfHand, Stealth];
+    intSkills = [Arcana, History, Investigation, Nature, Religion];
+    wisSkills = [AnimalHandling, Insight, Medicine, Perception, Survival];
+    chaSkills = [Deception, Intimidation, Performance, Persuasion];
+    
+    fullSkillList = [strSkills, dexSkills, intSkills, wisSkills, chaSkills];
+    abilitiesForSkills = [Strength.score, Dexterity.score, Intelligence.score, Wisdom.score, Charisma.score];        
   }
   
-  int calcAbilityMod(int abilityScore) {
-    return (abilityScore/2 - 5).floor();
-  }
+//  void refactor() {
+//  }
+  
+//  int calcAbilityMod(int abilityScore) {
+//    return (abilityScore/2 - 5).floor();
+//  }
   
   // Run after race (and class?) is/are selected.
-  void skillsPlusAbilities() {    
-    List<Map> newSkillList = [];
+  void skillsPlusAbilities() {
     for (int i = 0; i < abilitiesForSkills.length; i++) {     
-      skillList[i].forEach((String skillName,int skillRank) { 
-        skillList[i][skillName] = skillRank + calcAbilityMod(abilitiesForSkills[i]);
-            }); 
+      fullSkillList[i].forEach((List<Skill> subSkillList) { 
+        subSkillList.forEach((Skill skill) {
+          skill.setValue(abilitiesForSkills[i]);  
+        }); // End subSkillList.forEach
+      }); // End fullSkillList.forEach
     }
-  } 
+  }
+  //  void skillsPlusAbilities() {    
+//    List<Map> newSkillList = [];
+//    for (int i = 0; i < abilitiesForSkills.length; i++) {     
+//      skillList[i].forEach((String skillName,int skillRank) { 
+//        skillList[i][skillName] = skillRank + calcAbilityMod(abilitiesForSkills[i]);
+//            }); 
+//    }
+//  } 
 
+  
+  
   // Adds racial bonuses to abilities and skills?
   void addRace() {
     switch (_race) {
       case 'human':
-        allAbilities.forEach((String ability, int value) {
-          allAbilities[ability] = value + 1;
+        abilities.forEach((Ability ability) {
+          ability.increaseAbility(1);
+          _movement = 30;
       });
         
         break;
@@ -112,6 +136,10 @@ class Entity {
     }
     
     
+  }
+  
+  void chooseSkillProficiency(Skill skill) {
+    skill.increaseValue(_proficiency);
   }
   
   void chooseStatIncrease() {
@@ -182,12 +210,12 @@ class Entity {
   }
   
   // Getters
-  int get strength => _strength;
-  int get dexterity => _dexterity;
-  int get constitution => _constitution;
-  int get intelligence => _intelligence;
-  int get wisdom => _wisdom;
-  int get charisma => _charisma;
+  int get strength => Strength.score;
+  int get dexterity => Dexterity.score;
+  int get constitution => Constitution.score;
+  int get intelligence => Intelligence.score;
+  int get wisdom => Wisdom.score;
+  int get charisma => Charisma.score;
   int get currentHP => _currentHitPoints;
   int get level => _level;
   int get HD => _hitDie;
@@ -228,12 +256,12 @@ class Entity {
   }
   
   // Setters
-  void set strength(int str) { _strength = str;}
-  void set dexterity(int dex) {_dexterity = dex;}
-  void set constitution(int con) { _constitution = con;}
-  void set intelligence(int intl) { _intelligence = intl;}
-  void set wisdom(int wis) { _wisdom = wis;}
-  void set charisma(int cha) { _charisma = cha;}
+//  void set strength(int str) { _strength = str;}
+//  void set dexterity(int dex) {_dexterity = dex;}
+//  void set constitution(int con) { _constitution = con;}
+//  void set intelligence(int intl) { _intelligence = intl;}
+//  void set wisdom(int wis) { _wisdom = wis;}
+//  void set charisma(int cha) { _charisma = cha;}
   void set currentHP(int hp) { _currentHitPoints = hp;}
   void set size(String size) { _size = size;}
   void set level(int lvl) { _level = lvl;}
@@ -251,58 +279,8 @@ class Entity {
 } // End class Entity  
 
 
-class Ability {
-  final int LIMIT = 20; // Limit for PCs for now.
-  final String _name;
-  int _score;
-  int _mod;
-  
-  Ability(this._name, [this._score = 0]) {
-    calcMod();
-  }
-  
-  int get ability => _score;
-  int get mod => _mod;
 
-  @override String toString() => "${_name}: ${_score} (${modAsString()})";
-  String modAsString() => "${(_mod >= 0) ? '+' : ''}${_mod.toString()}"; 
-  
-  void calcMod() {
-    _mod = (_score/2 - 5).floor();
-  }
-  
-  // Cap set to 20, can change later.
-  void setAbility(int value) {
-    if (value > LIMIT) {
-      // Oh fuck off.
-      _score = LIMIT;
-    }
-    else if (value < 0) {
-      // Wtf are you doing.
-      _score = 0;      
-    }
-    else {
-      _score = value;
-    }   
-    calcMod();
-  }
-  
-  void increaseAbility(int value) {
-    _score += value;
-    calcMod();
-  }
-  void decreaseAbility(int value) {
-    _score -= value;
-    calcMod();
-  }
-  
-}
 
-// Will eventually split Entity into child classes, 
-//  but for now, Entity will be the entire Character class.
-//class Character extends Entity {
-//  Character();
-//}
 
 
 
