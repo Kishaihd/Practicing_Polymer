@@ -9,9 +9,11 @@ class Ability {
   Ability(this._name, [this._score = 0]) {
     calcMod();
   }
-  
+
+  String get name => _name;
   int get score => _score;
   int get mod => _mod;
+  int get limit => LIMIT;
 
   @override String toString() => "${_name}: ${_score} (${modAsString()})";
   String modAsString() => "${(_mod >= 0) ? '+' : ''}${_mod.toString()}"; 
